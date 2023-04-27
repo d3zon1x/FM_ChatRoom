@@ -25,6 +25,7 @@ namespace ClientApp
         public ICommand LoginCmd => LoginCommand;
         public ICommand RegisterCmd => RegisterCommand;
         private DatabaseContext db = null;
+        public event EventHandler OnRequestClose;
         public ViewModelLogin()
         {
             Login = "";
@@ -62,7 +63,7 @@ namespace ClientApp
                     }
                     else
                     {
-                        //Open main window
+                        OpenMainWindow();
                     }
                 }
                 catch (Exception ex)
@@ -91,7 +92,7 @@ namespace ClientApp
                             LastVisit = DateTime.Now
                         });
                         db.SaveChangesAsync();
-                        //Open Main window    
+                        OpenMainWindow();
                     }
                 }
                 catch (Exception ex)
@@ -99,6 +100,18 @@ namespace ClientApp
                     MessageBox.Show(ex.Message);
                 }
             });      
+        }
+        private async void OpenMainWindow()
+        {
+            await Task.Run(() =>
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    MainWindow mainWindow = new MainWindow(Login);
+                    mainWindow.Show();
+                    OnRequestClose(this, new EventArgs());
+                });
+            });
         }
     }
 }

@@ -21,6 +21,7 @@ namespace ClientApp
         {
             InitializeComponent();
             viewModelLogin = new ViewModelLogin();
+            viewModelLogin.OnRequestClose += (s, e) => this.Close();
             this.DataContext = viewModelLogin;
         }
     }
