@@ -10,9 +10,10 @@ namespace ClientApp
     [AddINotifyPropertyChangedInterface]
     public class ViewModelMainWindow
     {
-        public ViewModelMainWindow()
+        public string Nick { get; set; }
+        public ViewModelMainWindow(string nick)
         {
-            
+            Nick = nick;
         }
     }
 }

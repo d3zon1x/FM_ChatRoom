@@ -20,10 +20,10 @@ namespace ClientApp
     public partial class MainWindow : Window
     {
         ViewModelMainWindow model;
-        public MainWindow()
+        public MainWindow(string nick)
         {
             InitializeComponent();
-            model = new ViewModelMainWindow();
+            model = new ViewModelMainWindow(nick);
             this.DataContext = model;
         }
     }
