@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="ChatServer.cs~RF197fb62d.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ExpansionForCAndS\ExpansionForCAndS.csproj" />
   </ItemGroup>
 
