@@ -14,6 +14,7 @@ namespace ExpansionForCAndS
         public string To { get; set; }
         public string Message { get; set; }
         public DateTime TimeSend { get; set; }
+        public string _time => TimeSend.ToShortTimeString();
 
         public MessageInfo(MessageType type, string from=".", string to=".", string message=".")
         {
