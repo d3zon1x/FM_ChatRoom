@@ -7,32 +7,44 @@
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance local:ViewModelMainWindow}"
         Title="MainWindow" Height="450" Width="800">
-    <DockPanel LastChildFill="False">
-        <DockPanel DockPanel.Dock="Left">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"></ColumnDefinition>
+            <ColumnDefinition Width="8*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <DockPanel DockPanel.Dock="Left" Grid.Column="0">
             <TextBlock DockPanel.Dock="Top" Margin="5" HorizontalAlignment="Center" VerticalAlignment="Center">Users</TextBlock>
-            <ListBox DockPanel.Dock="Left" Width="100" Height="385" Margin="5" ></ListBox>
-        </DockPanel>
-        <DockPanel DockPanel.Dock="Top">
-            <TextBlock DockPanel.Dock="Top" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5">Main Chat</TextBlock>
-            <ListBox Margin="10" ScrollViewer.HorizontalScrollBarVisibility="Auto" HorizontalContentAlignment="Stretch" Height="350">
+            <ListBox DockPanel.Dock="Left" Margin="5" 
+                     ItemsSource="{Binding Path=Users, UpdateSourceTrigger=PropertyChanged}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <DockPanel HorizontalAlignment="Stretch" LastChildFill="False">
-                            <TextBlock Margin="10, 0" DockPanel.Dock="Left"></TextBlock>
-                            <TextBlock DockPanel.Dock="Right"></TextBlock>
+                        <DockPanel>
+                            <TextBlock Text="{Binding Path=Nick}" HorizontalAlignment="Stretch"></TextBlock>
                         </DockPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
         </DockPanel>
-        <DockPanel DockPanel.Dock="Right">
-            
+        <DockPanel LastChildFill="True" Grid.Column="1">
+            <TextBlock DockPanel.Dock="Top" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5">Main Chat</TextBlock>
+            <DockPanel DockPanel.Dock="Bottom">
+                <Label Margin="5" VerticalAlignment="Center">Message :</Label>
+                <Button Margin="5" Padding="10,5" 
+                            DockPanel.Dock="Right" Command="{Binding Path=SendMsgCmd, UpdateSourceTrigger=PropertyChanged}">Send Message</Button>
+                <TextBox Margin="5" VerticalContentAlignment="Center" Text="{Binding Path=Message, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+            </DockPanel>
+            <ListBox DockPanel.Dock="Left" Margin="5" 
+                     ItemsSource="{Binding Path=Messages, UpdateSourceTrigger=PropertyChanged}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <DockPanel LastChildFill="True">
+                            <TextBlock DockPanel.Dock="Left"><Run Text="{Binding Path=From, UpdateSourceTrigger=PropertyChanged}"></Run>:</TextBlock>
+                            <TextBlock DockPanel.Dock="Right" Text="{Binding Path=_time, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+                            <TextBlock Text="{Binding Path=Message, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+                        </DockPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </DockPanel>
-        <DockPanel DockPanel.Dock="Bottom">
-            <Label Margin="5" VerticalAlignment="Center">Message :</Label>
-            <TextBox Margin="5" VerticalContentAlignment="Center" Width="450"></TextBox>
-            <Button Margin="5" Padding="10,5" 
-                    DockPanel.Dock="Right">Send Message</Button>
-        </DockPanel>
-    </DockPanel>
+    </Grid>
 </Window>
