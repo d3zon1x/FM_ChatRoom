@@ -28,9 +28,9 @@ namespace ClientApp
         public event EventHandler OnRequestClose;
         public ViewModelLogin()
         {
-            Login = "";
+            Login = "Test";
             Email = "";
-            Password = "";
+            Password = "test";
             LoginCommand = new RelayCommand((o) => LoginBtnClick(), (o) => IsValidLogin && IsValidPassword);
             RegisterCommand = new RelayCommand((o) => RegisterBtnClick(), (o) => IsValidLogin && IsValidPassword && IsValidEmail);
             db = new DatabaseContext();

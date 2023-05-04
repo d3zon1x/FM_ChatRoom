@@ -34,10 +34,11 @@
                 <TextBox Margin="5" VerticalContentAlignment="Center" Text="{Binding Path=Message, UpdateSourceTrigger=PropertyChanged}"></TextBox>
             </DockPanel>
             <ListBox DockPanel.Dock="Left" Margin="5" 
-                     ItemsSource="{Binding Path=Messages, UpdateSourceTrigger=PropertyChanged}">
+                     ItemsSource="{Binding Path=Messages, UpdateSourceTrigger=PropertyChanged}"
+                     HorizontalContentAlignment="Stretch">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <DockPanel LastChildFill="True">
+                        <DockPanel LastChildFill="True" HorizontalAlignment="Stretch">
                             <TextBlock DockPanel.Dock="Left"><Run Text="{Binding Path=From, UpdateSourceTrigger=PropertyChanged}"></Run>:</TextBlock>
                             <TextBlock DockPanel.Dock="Right" Text="{Binding Path=_time, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
                             <TextBlock Text="{Binding Path=Message, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
