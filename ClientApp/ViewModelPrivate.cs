@@ -19,9 +19,10 @@ namespace ClientApp
 
         private RelayCommand SendMsgCommand;
         public ICommand SendCmd => SendMsgCommand;
-        public ViewModelPrivate(string nick) 
+        public ViewModelPrivate(string nick, string nickTo)
         {
             Nick = nick;
+            NickTo = nickTo;
             Message = "";
             SendMsgCommand = new RelayCommand((a) => SendMessage(), (c) => Message.Length > 0   ); 
         }
@@ -30,7 +31,7 @@ namespace ClientApp
         {
             await Task.Run(() => 
             {
-                
+                Message = "";
             });
         }
     }
