@@ -20,10 +20,10 @@ namespace ClientApp
     public partial class PrivateWindow : Window
     {
         ViewModelPrivate model;
-        public PrivateWindow(string nick)
+        public PrivateWindow(string nick, string nickTo)
         {
             InitializeComponent();
-            model = new ViewModelPrivate(nick);
+            model = new ViewModelPrivate(nick, nickTo);
             this.DataContext = model;
         }
     }

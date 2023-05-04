@@ -35,14 +35,15 @@ namespace ServerConsole
                         byte[] buffer = new byte[256];
                         int bytesRead;
                         string data = new string("");
-                        while ((bytesRead = socket.Receive(buffer))>0)
+                        while ((bytesRead = socket.Receive(buffer)) > 0)
                         {
                             if (!socket.Connected || bytesRead == 0 || socket == null) break;
-                            data= Encoding.Unicode.GetString(buffer, 0, bytesRead);
+                            data = Encoding.Unicode.GetString(buffer, 0, bytesRead);
                             if (bytesRead < 256)
                             {
-                               MessageInfo message = data.FromBase64<MessageInfo>();
-                               IncomingMessageHandler(message);
+                                Console.WriteLine(data);
+                                MessageInfo message = data.FromBase64<MessageInfo>();
+                                IncomingMessageHandler(message);
                                 break;
                             }
                         }
@@ -53,6 +54,10 @@ namespace ServerConsole
                 catch (SocketException ex)
                 {
                     Console.WriteLine("Socket Exception: {0}", ex.Message);
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine("ListenClient : " + ex.Message);
                 }
                 finally
                 {
@@ -68,13 +73,15 @@ namespace ServerConsole
             {
                 try
                 {
+                    ChatServer.Instance.RemoveUser(Nick);
+                    ChatServer.Instance.SendMessageToAll(new MessageInfo(MessageType.Public, Nick, "All", "Disconnect from server"));
                     socket.Shutdown(SocketShutdown.Both);
                     socket.Close();
                     Console.WriteLine("Close");
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    Console.WriteLine("Disconnect : " + ex.Message);
                 }
             });
         }
@@ -105,18 +112,14 @@ namespace ServerConsole
             {
                 try
                 {
-                    byte[] buffer = new byte[256];
-                    int bytesRead = socket.Receive(buffer);
-                  
-                    string data = Encoding.Unicode.GetString(buffer, 0, bytesRead);
-                    Console.WriteLine("Received: {0}", data);
-                    
-                    byte[] response = Encoding.Unicode.GetBytes($"Server response {data}");
-                    socket.Send(response);
+                    string response = messageInfo.ToBase64();
+                    byte[] buffer = Encoding.Unicode.GetBytes(response);
+                    socket.Send(buffer);
                 }
                 catch (Exception ex)
                 {
                     Disconnect();
+                    Console.WriteLine("SendMessage : " + ex.Message);
                 }
             });
         }

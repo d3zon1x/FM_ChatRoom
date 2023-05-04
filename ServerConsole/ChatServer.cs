@@ -13,7 +13,7 @@ namespace ServerConsole
     public class ChatServer: SingletonClass<ChatServer>
     {
         private string serverAddress = "127.0.0.1";
-        private int port = 12345;
+        private int port = 4040;
         Socket server;
         private int MaxUsers = 10;
         private List<UserHendler> users;
@@ -39,7 +39,7 @@ namespace ServerConsole
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine(ex.Message);
+                        Console.WriteLine("SendMessageToAll" + ex.Message);
                     }
                 }
             });
@@ -50,11 +50,15 @@ namespace ServerConsole
             {
                 try
                 {
-                    users.Where(i => i.Nick == nickTo).First().SendMessage(message);
+                    //users.Where(i => i.Nick == nickTo).First().SendMessage(message);
+                    foreach (UserHendler item in users.Where(i => i.Nick == nickTo))
+                    {
+                        item.SendMessage(message);
+                    }
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    Console.WriteLine("SendToSpecificUser : " + ex.Message);
                 }
             });
         }
@@ -111,6 +115,7 @@ namespace ServerConsole
         {
             await Task.Run(() =>
             {
+
                 // Отримуємо сокет клієнта з параметрів методу
                 Socket client = obj as Socket;
 
