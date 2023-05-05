@@ -5,9 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ClientApp"
         mc:Ignorable="d"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+     TextElement.FontWeight="Regular"
+     TextElement.FontSize="13"
+     TextOptions.TextFormattingMode="Ideal"
+     TextOptions.TextRenderingMode="Auto"
+     Background="{DynamicResource MaterialDesignPaper}"
+     FontFamily="{DynamicResource MaterialDesignFont}"
         d:DataContext="{d:DesignInstance local:ViewModelLogin}"
         Title="LoginWindow" Height="210" Width="505">
-    <DockPanel LastChildFill="False">
+    <DockPanel LastChildFill="False" >
         <Grid DockPanel.Dock="Top">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -22,21 +30,34 @@
             <TextBlock Grid.Row="0" Grid.Column="0" Margin="5"
                        Text="Login:" VerticalAlignment="Center" />
             <TextBox Grid.Row="0" Grid.Column="1" Margin="5" 
+                materialDesign:HintAssist.Hint="Login"
+  materialDesign:TextFieldAssist.UnderlineBrush="#f5f5f5"
+  Style="{StaticResource MaterialDesignTextBox}"
                      Text="{Binding Path=Login, UpdateSourceTrigger=PropertyChanged}"/>
 
             <TextBlock Grid.Row="1" Grid.Column="0" Margin="5"
                        Text="Password:" VerticalAlignment="Center" />
-            <TextBox Grid.Row="1" Grid.Column="1" Margin="5"
-                         Text="{Binding Path=Password, UpdateSourceTrigger=PropertyChanged}"/>
+            <PasswordBox Grid.Row="1" Grid.Column="1" Margin="5"
+                materialDesign:TextFieldAssist.HasClearButton="True"
+                materialDesign:HintAssist.Hint="Password"
+  materialDesign:TextFieldAssist.UnderlineBrush="#f5f5f5"
+  Style="{StaticResource MaterialDesignPasswordBox}"
+                         PasswordChar="{Binding Path=Password, UpdateSourceTrigger=PropertyChanged}"/>
 
             <TextBlock Grid.Row="2" Grid.Column="0" Margin="5"
                        Text="Email:" VerticalAlignment="Center" />
             <TextBox Grid.Row="2" Grid.Column="1" Margin="5"
+                   materialDesign:HintAssist.Hint="Email"  
+  materialDesign:TextFieldAssist.UnderlineBrush="#f5f5f5"
+  Style="{StaticResource MaterialDesignTextBox}"
                      Text="{Binding Path=Email, UpdateSourceTrigger=PropertyChanged}"/>
 
         </Grid>
         <UniformGrid DockPanel.Dock="Top" Columns="2">
             <Button Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
+                    Style="{StaticResource MaterialDesignRaisedDarkButton}"
+    Width="100"
+    ToolTip="Resource name: MaterialDesignRaisedLightDarkButton"
                     Margin="5" Content="Login" Command="{Binding Path=LoginCmd}"/>
 
             <Button Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"
