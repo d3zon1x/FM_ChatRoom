@@ -3,10 +3,12 @@ using PropertyChanged;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace ClientApp
@@ -28,9 +30,10 @@ namespace ClientApp
         public event EventHandler OnRequestClose;
         public ViewModelLogin()
         {
+
             Login = "Test";
             Email = "";
-            Password = "test";
+            Password = "";
             LoginCommand = new RelayCommand((o) => LoginBtnClick(), (o) => IsValidLogin && IsValidPassword);
             RegisterCommand = new RelayCommand((o) => RegisterBtnClick(), (o) => IsValidLogin && IsValidPassword && IsValidEmail);
             db = new DatabaseContext();
@@ -54,6 +57,7 @@ namespace ClientApp
         {
             await Task.Run(() =>
             {
+                //MessageBox.Show(Login + Password);
                 try
                 {
                     var user = db.Credential.Where(x => x.Login == Login && x.Password == Password).First();
