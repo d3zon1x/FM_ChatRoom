@@ -42,13 +42,38 @@ namespace ClientApp
                     try
                     {
                         MessageInfo message = sender as MessageInfo;
-                        messages.Add(message);
+                        this.IncomingMessageHandler(message);
                     }
                     catch (Exception ex)
                     {
                         MessageBox.Show("Instance_NewMessage : " + ex.Message);
                     }
                 });
+            });
+        }
+
+        private async void IncomingMessageHandler(MessageInfo info)
+        {
+            await Task.Run(() =>
+            {
+                try
+                {
+                    switch (info.Type)
+                    {
+                        case MessageType.Private:
+                            ServerHandler.Instance.users.First(u => u.Nick == info.From).messages.Add(info);
+                            break;
+                        case MessageType.Public:
+                            messages.Add(info);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("IncomingMessageHandler : " + ex.Message);
+                }
             });
         }
 

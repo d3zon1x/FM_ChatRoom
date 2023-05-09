@@ -31,6 +31,7 @@ namespace ClientApp
         {
             await Task.Run(() => 
             {
+                ServerHandler.Instance.SendMessage(new MessageInfo(MessageType.Private, Nick, NickTo, Message));
                 Message = "";
             });
         }
