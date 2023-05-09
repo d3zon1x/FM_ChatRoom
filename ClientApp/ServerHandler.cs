@@ -96,10 +96,7 @@ namespace ClientApp
                 {
                     IncomingMessageHandler(response.FromBase64<MessageInfo>());
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("IncomingMessageHandler str : " + ex.Message);
-                }
+                catch (Exception) { }
             });
         }
         private async void IncomingMessageHandler(MessageInfo info)
@@ -110,10 +107,7 @@ namespace ClientApp
                 {
                     this.NewMessage(info, new EventArgs());
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("IncomingMessageHandler messin : " + ex.Message);
-                }
+                catch (Exception) { }
             });
         }
         public async void SendMessage(MessageInfo message)

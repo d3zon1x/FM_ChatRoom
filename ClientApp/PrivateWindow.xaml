@@ -26,6 +26,6 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        
+
     </DockPanel>
 </Window>
