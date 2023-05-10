@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ExpansionForCAndS
 {
-    public enum MessageType { Private, Public, Exception, Disconnect, Update};
+    public enum MessageType { Private, Public, Exception, Disconnect, Update, SetNick};
     public class MessageInfo
     {
         public MessageType Type { get; set; }

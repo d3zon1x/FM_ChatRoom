@@ -26,5 +26,17 @@ namespace ClientApp
             model = new ViewModelMainWindow(nick);
             this.DataContext = model;
         }
+
+
+        private void ListBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            ListBox listBox = (ListBox)sender;
+            var selectedItem = listBox.SelectedItem;
+            if (selectedItem != null)
+            {
+                var clickedItem = selectedItem.ToString();
+                model.OpenPrivateChat(clickedItem);
+            }
+        }
     }
 }

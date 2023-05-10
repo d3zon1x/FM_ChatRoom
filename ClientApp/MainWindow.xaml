@@ -23,7 +23,7 @@
         <DockPanel DockPanel.Dock="Left" Grid.Column="0">
             <TextBlock DockPanel.Dock="Top" Margin="5" HorizontalAlignment="Center" VerticalAlignment="Center">Users</TextBlock>
             <Border BorderThickness="2" BorderBrush="LightGray" Margin="3" CornerRadius="10">
-                <ListBox DockPanel.Dock="Left" Margin="3" 
+                <ListBox MouseDoubleClick="ListBox_MouseDoubleClick" DockPanel.Dock="Left" Margin="3" 
                          ItemsSource="{Binding Path=Users, UpdateSourceTrigger=PropertyChanged}">
                     <ListBox.ItemTemplate>
                         <DataTemplate>

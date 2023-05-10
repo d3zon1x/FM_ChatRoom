@@ -34,7 +34,9 @@ namespace ClientApp
                 try
                 {
                     server.Connect(new IPEndPoint(IPAddress.Parse(this.serverAddress), port));
+
                     ListenServer();
+
                 }
                 catch (Exception ex)
                 {

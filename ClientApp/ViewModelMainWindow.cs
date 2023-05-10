@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Navigation;
 
 namespace ClientApp
 {
@@ -33,8 +34,9 @@ namespace ClientApp
             SendMsgCommand = new RelayCommand((a) => SendMessage(), (c) => Message.Length > 0 && IsConnected);
             ServerHandler.Instance.NewMessage += Instance_NewMessage;
             databaseContext =  new DatabaseContext();
+            ServerHandler.Instance.SendMessage(new MessageInfo(MessageType.SetNick, Nick));
         }
-
+            
         private async void Instance_NewMessage(object? sender, EventArgs e)
         {
             await Task.Run(() =>
@@ -61,20 +63,25 @@ namespace ClientApp
             {
                 try
                 {
-                    switch (info.Type)
+                    Application.Current.Dispatcher.Invoke(() =>
                     {
-                        case MessageType.Private:
-                            ServerHandler.Instance.users.First(u => u.Nick == info.From).messages.Add(info);
-                            break;
-                        case MessageType.Public:
-                            messages.Add(info);
-                            break;
-                        case MessageType.Update:
-                            UpdateUsers(databaseContext.Credential.Select(c=>c.Login).ToList());
-                            break;
-                        default:
-                            break;
-                    }
+                        switch (info.Type)
+                        {
+                            case MessageType.Private:
+                                MessageBox.Show(info.ToString());
+                                string temp = (info.From == Nick) ? info.To : info.From;
+                                ServerHandler.Instance.users.First(u => u.Nick == temp).messages.Add(info);
+                                break;
+                            case MessageType.Public:
+                                messages.Add(info);
+                                break;
+                            case MessageType.Update:
+                                UpdateUsers(databaseContext.Credential.Select(c=>c.Login).ToList());
+                                break;
+                            default:
+                                break;
+                        }
+                    });
                 }
                 catch (Exception ex)
                 {
@@ -126,6 +133,33 @@ namespace ClientApp
                     {
                         MessageBox.Show("SendMessage : " + ex.Message);
                     }
+                });
+            });
+        }
+        public async void OpenPrivateChat(string NickTo)
+        {
+            await Task.Run(() =>
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    if (ServerHandler.Instance.users.Where(x => x.Nick == NickTo).First().IsOpen == true)
+                    {
+                        return;
+                    }
+                    PrivateWindow privateWindow = new PrivateWindow(Nick, NickTo);
+                    ServerHandler.Instance.users.Where(x => x.Nick == NickTo).First().IsOpen = true;
+                    privateWindow.Show();
+                    privateWindow.Closed += (s, a) =>
+                    {
+                        try
+                        {
+                            ServerHandler.Instance.users.Where(x=>x.Nick == NickTo).First().IsOpen = false;
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.Message); 
+                        }
+                    };
                 });
             });
         }
