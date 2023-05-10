@@ -12,6 +12,7 @@ namespace Database
     public class DatabaseContext: DbContext
     {
         public DbSet<Credentials> Credential { get; set; }
+        public DbSet<LogMassageInfo> LogMassageInfos { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
