@@ -90,6 +90,14 @@ namespace ServerConsole
         {
             await Task.Run(() =>
             {
+                ChatServer.Instance.db.LogMassageInfos.Add(new Database.Entities.LogMassageInfo()
+                {
+                    Type = data.Type.ToString(),
+                    From = data.From,
+                    To = data.To,
+                    Message = data.Message,
+                });
+                ChatServer.Instance.db.SaveChangesAsync();
                 // logs message
                 Console.WriteLine(data);
                 switch (data.Type)

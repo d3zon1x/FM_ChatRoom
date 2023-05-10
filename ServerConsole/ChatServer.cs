@@ -1,4 +1,5 @@
-﻿using ExpansionForCAndS;
+﻿using Database;
+using ExpansionForCAndS;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,12 +18,14 @@ namespace ServerConsole
         Socket server;
         private int MaxUsers = 10;
         private List<UserHendler> users;
+        public DatabaseContext db;
 
         public ChatServer()
         {
             server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             server.Bind(new IPEndPoint(IPAddress.Parse(serverAddress), port));
             users = new List<UserHendler>();
+            db = new DatabaseContext();
         }
 
         #region SendMessages
