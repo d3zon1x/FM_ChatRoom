@@ -43,6 +43,7 @@ namespace ServerConsole
                             {
                                 Console.WriteLine(data);
                                 MessageInfo message = data.FromBase64<MessageInfo>();
+                                Console.WriteLine(message);
                                 IncomingMessageHandler(message);
                                 break;
                             }
@@ -90,24 +91,30 @@ namespace ServerConsole
         {
             await Task.Run(() =>
             {
-                ChatServer.Instance.db.LogMassageInfos.Add(new Database.Entities.LogMassageInfo()
+                try
                 {
-                    Type = data.Type.ToString(),
-                    From = data.From,
-                    To = data.To,
-                    Message = data.Message,
-                });
-                ChatServer.Instance.db.SaveChangesAsync();
-                // logs message
-                Console.WriteLine(data);
-                switch (data.Type)
+                    Console.WriteLine(data);
+                    ChatServer.Instance.db.LogMassageInfos.Add(new Database.Entities.LogMassageInfo()
+                    {
+                        Type = data.Type.ToString(),
+                        From = data.From,
+                        To = data.To,
+                        Message = data.Message,
+                    });
+                    ChatServer.Instance.db.SaveChangesAsync();
+                    switch (data.Type)
+                    {
+                        case MessageType.SetNick:
+                            this.Nick = data.From;
+                            break;
+                        default:
+                            ChatServer.Instance.IncomingMessageHandlerOnServer(data);
+                            break;
+                    }
+                }
+                catch (Exception ex)
                 {
-                    case MessageType.Disconnect:
-                        //this.tcpClient.Close();
-                        break;
-                    default:
-                        ChatServer.Instance.IncomingMessageHandlerOnServer(data);
-                        break;
+                    Console.WriteLine(ex.Message);
                 }
             });
         }

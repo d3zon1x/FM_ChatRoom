@@ -57,6 +57,8 @@ namespace ServerConsole
                     foreach (UserHendler item in users.Where(i => i.Nick == nickTo))
                     {
                         item.SendMessage(message);
+                        Console.WriteLine(message);                            
+                        Console.WriteLine(item);                            
                     }
                 }
                 catch (Exception ex)
@@ -157,7 +159,10 @@ namespace ServerConsole
                         SendMessageToAll(message);
                         break;
                     case MessageType.Private:
+                        Console.WriteLine(message);
+                        SendToSpecificUser(message, message.From);
                         SendToSpecificUser(message, message.To);
+                        Console.WriteLine("ggggggggggg");
                         break;
                     case MessageType.Exception:
                         break;

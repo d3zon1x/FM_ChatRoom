@@ -12,12 +12,19 @@ namespace ExpansionForCAndS
     public class User
     {
         public string Nick { get; set; }
+        public bool IsOpen { get; set; }
         public ObservableCollection<MessageInfo> messages { get; set; }
         public IEnumerable<MessageInfo> Messages => messages;
         public User(string nick, ObservableCollection<MessageInfo> messages)
         {
-            Nick = nick;
+            Nick = nick; 
             this.messages = messages;
+            IsOpen = false;
+        }
+
+        public override string ToString()
+        {
+            return $"{Nick}";
         }
     }
 }

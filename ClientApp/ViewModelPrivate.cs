@@ -2,6 +2,7 @@
 using PropertyChanged;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,7 +16,8 @@ namespace ClientApp
         public string Nick { get; set; }
         public string NickTo { get; set; }
         public string Message { get; set; }
-        public User user => ServerHandler.Instance.users.Where(x => x.Nick == NickTo).FirstOrDefault();
+        private ObservableCollection<MessageInfo> messages => ServerHandler.Instance.users.Where(x => x.Nick == NickTo).First().messages;
+        public IEnumerable<MessageInfo> Massages => messages;
 
         private RelayCommand SendMsgCommand;
         public ICommand SendCmd => SendMsgCommand;
