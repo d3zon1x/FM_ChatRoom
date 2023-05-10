@@ -1,4 +1,5 @@
-﻿using ExpansionForCAndS;
+﻿using Database;
+using ExpansionForCAndS;
 using PropertyChanged;
 using System;
 using System.Collections.Generic;
@@ -23,6 +24,7 @@ namespace ClientApp
         public ICommand SendMsgCmd => SendMsgCommand;
         public IEnumerable<User> Users => ServerHandler.Instance.users;
         public bool IsConnected => ServerHandler.Instance.IsConnected;
+        DatabaseContext databaseContext;
         public ViewModelMainWindow(string nick)
         {
             Nick = nick;
@@ -30,6 +32,7 @@ namespace ClientApp
             messages = new ObservableCollection<MessageInfo>();
             SendMsgCommand = new RelayCommand((a) => SendMessage(), (c) => Message.Length > 0 && IsConnected);
             ServerHandler.Instance.NewMessage += Instance_NewMessage;
+            databaseContext =  new DatabaseContext();
         }
 
         private async void Instance_NewMessage(object? sender, EventArgs e)
@@ -66,6 +69,9 @@ namespace ClientApp
                         case MessageType.Public:
                             messages.Add(info);
                             break;
+                        case MessageType.Update:
+                            UpdateUsers(databaseContext.Credential.Select(c=>c.Login).ToList());
+                            break;
                         default:
                             break;
                     }
@@ -77,6 +83,32 @@ namespace ClientApp
             });
         }
 
+        private async void UpdateUsers(IEnumerable<string> list)
+        {
+            await Task.Run(() =>
+            {
+                try
+                {
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        foreach (var item in list.Where(l=> l!= Nick))
+                        {
+                            if (!ServerHandler.Instance.users.Select(u => u.Nick).Contains(item))
+                            {
+                                User user = new User(item, new ObservableCollection<MessageInfo>());
+                                ServerHandler.Instance.users.Add(user);
+                            }
+                        }
+                    });
+                    
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+            });
+        }
         private async void SendMessage()
         {
             await Task.Run(() => 

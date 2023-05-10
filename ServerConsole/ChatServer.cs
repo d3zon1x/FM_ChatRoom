@@ -133,6 +133,7 @@ namespace ServerConsole
                 {
                     Console.WriteLine($"Client connected");
                     this.users.Add(user);
+                    user.SendMessage(new MessageInfo(MessageType.Update));
                     Console.WriteLine(user);
                 }
             });
